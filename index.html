@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aplikasi Perangkat Pembelajaran</title>
+    <script src="/_sdk/element_sdk.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+
+      .menu-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .menu-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      }
+
+      .menu-card:active {
+        transform: translateY(-4px);
+      }
+
+      .back-button {
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .back-button:hover {
+        transform: translateX(-4px);
+      }
+    </style>
+    <style>
+      @view-transition {
+        navigation: auto;
+      }
+    </style>
+    <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  </head>
+  <body class="min-h-full">
+    <div id="app" class="w-full min-h-full"></div>
+    <script>
+      const defaultConfig = {
+        main_title: "APLIKASI PERANGKAT PEMBELAJARAN",
+        subtitle: "Panduan Penggunaan",
+        background_color: "#1e40af",
+        surface_color: "#ffffff",
+        text_color: "#1e293b",
+        primary_color: "#3b82f6",
+        accent_color: "#2563eb",
+        font_family: "Inter",
+        font_size: 16,
+      };
+
+      let currentPage = "home";
+
+      const menuItems = [
+        {
+          id: "pendahuluan",
+          icon: "📋",
+          title: "Pendahuluan",
+          color: "#3b82f6",
+        },
+        { id: "materi", icon: "📚", title: "Materi", color: "#2563eb" },
+        { id: "contoh", icon: "📝", title: "Contoh", color: "#1d4ed8" },
+        { id: "latihan", icon: "✏️", title: "Latihan", color: "#60a5fa" },
+        { id: "evaluasi", icon: "📊", title: "Evaluasi", color: "#3b82f6" },
+      ];
+
+      const content = {
+        pendahuluan: {
+          title: "Pendahuluan",
+          description:
+            "Pada bagian pendahuluan, menjadi awal bagi peserta didik untuk mengetahui proses pembelajaran yang akan berjalan ke depannya. Bagian ini di dalamnya meliputi:",
+          subsections: [
+            {
+              title: "1) Informasi Umum",
+              items: [
+                "Identitas modul",
+                "Kompetensi awal",
+                "Profil pelajar pancasila",
+                "Sarana dan prasarana",
+                "Target peserta didik",
+                "Model pembelajaran",
+              ],
+            },
+            {
+              title: "2) Kompetensi Inti",
+              items: [
+                "Capaian pembelajaran",
+                "Tujuan pembelajaran",
+                "Indikator pencapaian tujuan pembelajaran",
+                "Pemahaman bermakna",
+              ],
+            },
+          ],
+          steps: [
+            "Buka menu Pendahuluan.",
+            "Baca tujuan pembelajaran dan bagian lainnya untuk mengetahui kompetensi yang harus dicapai.",
+          ],
+        },
+        materi: {
+          title: "Materi",
+          description:
+            "Pada bagian materi, terdapat materi teks berita dari mulai pengertian sampai langkah-langkah menulis teks berita.",
+          steps: [
+            "Pilih menu Materi.",
+            "Pilih bagian materi yang ingin dibaca.",
+            "Klik tombol kembali yang ada di ponsel, lalu klik materi yang lain jika ingin berpindah.",
+            "Gunakan fitur zoom untuk fokus pada bagian penting.",
+          ],
+        },
+        contoh: {
+          title: "Contoh",
+          description:
+            "Pada bagian contoh, menampilkan contoh teks berita baik dalam bentuk tulisan maupun video, dan pada bagian ini juga menampilkan contoh struktur teks berita.",
+          steps: [
+            "Pilih menu contoh.",
+            "Pilih bagian contoh yang ingin dibaca.",
+            "Perhatikan contoh dengan cermat dan teliti.",
+          ],
+        },
+        latihan: {
+          title: "Latihan",
+          description:
+            "Pada bagian latihan, berisi latihan untuk menulis teks berita yang meliputi latihan analisis unsur, latihan analisis struktur, dan latihan menulis teks berita.",
+          steps: [
+            "Buka menu Latihan.",
+            "Pilih bagian latihan yang ingin dikerjakan.",
+            "Kerjakan soal secara cermat dan teliti.",
+          ],
+        },
+        evaluasi: {
+          title: "Evaluasi",
+          description:
+            "Pada bagian evaluasi, berisi soal pilihan ganda untuk mengukur pemahaman atau kemampuan peserta didik terhadap materi teks berita.",
+          steps: [
+            "Buka menu evaluasi.",
+            "Baca instruksi dengan seksama.",
+            "Kerjakan seluruh soal tanpa keluar aplikasi.",
+          ],
+        },
+      };
+
+      function navigateTo(page) {
+        currentPage = page;
+        render(window.elementSdk ? window.elementSdk.config : defaultConfig);
+      }
+
+      function renderHomePage(config) {
+        const customFont = config.font_family || defaultConfig.font_family;
+        const baseFontStack = "system-ui, -apple-system, sans-serif";
+        const fontFamily = `${customFont}, ${baseFontStack}`;
+
+        const baseSize = config.font_size || defaultConfig.font_size;
+        const backgroundColor =
+          config.background_color || defaultConfig.background_color;
+        const surfaceColor =
+          config.surface_color || defaultConfig.surface_color;
+        const textColor = config.text_color || defaultConfig.text_color;
+        const accentColor = config.accent_color || defaultConfig.accent_color;
+        const mainTitle = config.main_title || defaultConfig.main_title;
+        const subtitle = config.subtitle || defaultConfig.subtitle;
+
+        return `
+        <div class="w-full min-h-full flex flex-col items-center justify-center" 
+             style="background: linear-gradient(135deg, ${backgroundColor} 0%, #3b82f6 100%); padding: ${
+          baseSize * 2
+        }px; font-family: ${fontFamily};">
+          
+          <!-- Header -->
+          <div class="text-center mb-12">
+            <h1 class="font-bold mb-3" 
+                style="font-size: ${
+                  baseSize * 2.5
+                }px; color: white; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+              ${mainTitle}
+            </h1>
+            <p class="font-medium" 
+               style="font-size: ${
+                 baseSize * 1.2
+               }px; color: white; opacity: 0.95;">
+              ${subtitle}
+            </p>
+            <div class="h-1 w-32 mx-auto mt-4 rounded-full" 
+                 style="background-color: white;"></div>
+          </div>
+
+          <!-- Menu Grid -->
+          <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${menuItems
+              .map(
+                (item) => `
+              <div class="menu-card rounded-xl shadow-lg overflow-hidden"
+                   style="background-color: ${surfaceColor};"
+                   onclick="navigateTo('${item.id}')">
+                <div class="p-8 text-center">
+                  <div class="text-6xl mb-4">${item.icon}</div>
+                  <h2 class="font-bold" 
+                      style="font-size: ${baseSize * 1.5}px; color: ${
+                  item.color
+                };">
+                    ${item.title}
+                  </h2>
+                  <div class="h-1 w-16 mx-auto mt-3 rounded-full" 
+                       style="background-color: ${item.color};"></div>
+                </div>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+
+          <!-- Footer Info -->
+          <div class="mt-12 text-center" style="color: white; opacity: 0.9; font-size: ${
+            baseSize * 0.9
+          }px;">
+            <p>Ketuk menu untuk memulai pembelajaran 👆</p>
+          </div>
+        </div>
+      `;
+      }
+
+      function renderContentPage(pageId, config) {
+        const customFont = config.font_family || defaultConfig.font_family;
+        const baseFontStack = "system-ui, -apple-system, sans-serif";
+        const fontFamily = `${customFont}, ${baseFontStack}`;
+
+        const baseSize = config.font_size || defaultConfig.font_size;
+        const backgroundColor =
+          config.background_color || defaultConfig.background_color;
+        const surfaceColor =
+          config.surface_color || defaultConfig.surface_color;
+        const textColor = config.text_color || defaultConfig.text_color;
+        const primaryColor =
+          config.primary_color || defaultConfig.primary_color;
+        const accentColor = config.accent_color || defaultConfig.accent_color;
+
+        const pageContent = content[pageId];
+        const menuItem = menuItems.find((item) => item.id === pageId);
+
+        return `
+        <div class="w-full min-h-full" 
+             style="background-color: ${backgroundColor}; padding: ${
+          baseSize * 2
+        }px; font-family: ${fontFamily};">
+          
+          <!-- Back Button -->
+          <div class="max-w-4xl mx-auto mb-6">
+            <div class="back-button inline-flex items-center gap-2 rounded-lg" 
+                 style="background-color: ${surfaceColor}; padding: ${
+          baseSize * 0.75
+        }px ${
+          baseSize * 1.25
+        }px; color: ${textColor}; font-size: ${baseSize}px;"
+                 onclick="navigateTo('home')">
+              <span style="font-size: ${baseSize * 1.2}px;">←</span>
+              <span>Kembali ke Menu</span>
+            </div>
+          </div>
+
+          <!-- Content Card -->
+          <div class="max-w-4xl mx-auto rounded-xl shadow-2xl" 
+               style="background-color: ${surfaceColor}; padding: ${
+          baseSize * 2
+        }px;">
+            
+            <!-- Header -->
+            <div class="flex items-center gap-4 mb-6 pb-6" 
+                 style="border-bottom: 2px solid ${menuItem.color};">
+              <div style="font-size: ${baseSize * 3}px;">${menuItem.icon}</div>
+              <h1 class="font-bold" 
+                  style="font-size: ${baseSize * 2}px; color: ${
+          menuItem.color
+        };">
+                ${pageContent.title}
+              </h1>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-6 rounded-lg" 
+                 style="background-color: ${backgroundColor}; padding: ${
+          baseSize * 1.5
+        }px;">
+              <p style="font-size: ${baseSize}px; line-height: 1.7; color: white;">
+                ${pageContent.description}
+              </p>
+            </div>
+
+            <!-- Subsections (if any) -->
+            ${
+              pageContent.subsections
+                ? `
+              <div class="space-y-4 mb-6">
+                ${pageContent.subsections
+                  .map(
+                    (sub) => `
+                  <div class="rounded-lg" 
+                       style="background-color: ${backgroundColor}; padding: ${
+                      baseSize * 1.5
+                    }px;">
+                    <h3 class="font-semibold mb-3" 
+                        style="font-size: ${baseSize * 1.2}px; color: white;">
+                      ${sub.title}
+                    </h3>
+                    <ul class="space-y-2">
+                      ${sub.items
+                        .map(
+                          (item) => `
+                        <li class="flex items-start gap-3">
+                          <span style="color: white; font-size: ${
+                            baseSize * 1.2
+                          }px; margin-top: 2px;">•</span>
+                          <span style="font-size: ${
+                            baseSize * 0.95
+                          }px; color: white;">${item}</span>
+                        </li>
+                      `
+                        )
+                        .join("")}
+                    </ul>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+            `
+                : ""
+            }
+
+            <!-- Steps -->
+            <div class="rounded-lg" 
+                 style="background-color: ${backgroundColor}; padding: ${
+          baseSize * 1.5
+        }px;">
+              <h3 class="font-semibold mb-4" 
+                  style="font-size: ${baseSize * 1.2}px; color: white;">
+                📌 Cara Menggunakan:
+              </h3>
+              <ol class="space-y-3">
+                ${pageContent.steps
+                  .map(
+                    (step, idx) => `
+                  <li class="flex items-start gap-3">
+                    <span class="font-bold flex-shrink-0 rounded-full" 
+                          style="background-color: white; color: ${
+                            menuItem.color
+                          }; width: ${baseSize * 1.5}px; height: ${
+                      baseSize * 1.5
+                    }px; display: flex; align-items: center; justify-content: center; font-size: ${
+                      baseSize * 0.85
+                    }px;">
+                      ${idx + 1}
+                    </span>
+                    <span style="font-size: ${
+                      baseSize * 0.95
+                    }px; color: white; padding-top: 2px;">
+                      ${step}
+                    </span>
+                  </li>
+                `
+                  )
+                  .join("")}
+              </ol>
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      function render(config) {
+        const app = document.getElementById("app");
+
+        if (currentPage === "home") {
+          app.innerHTML = renderHomePage(config);
+        } else {
+          app.innerHTML = renderContentPage(currentPage, config);
+        }
+      }
+
+      async function onConfigChange(config) {
+        render(config);
+      }
+
+      function mapToCapabilities(config) {
+        return {
+          recolorables: [
+            {
+              get: () =>
+                config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              },
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              },
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              },
+            },
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              },
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => {
+                config.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              },
+            },
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            },
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            },
+          },
+        };
+      }
+
+      function mapToEditPanelValues(config) {
+        return new Map([
+          ["main_title", config.main_title || defaultConfig.main_title],
+          ["subtitle", config.subtitle || defaultConfig.subtitle],
+        ]);
+      }
+
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities,
+          mapToEditPanelValues,
+        });
+      }
+
+      render(defaultConfig);
+    </script>
+    <script>
+      (function () {
+        function c() {
+          var b = a.contentDocument || a.contentWindow.document;
+          if (b) {
+            var d = b.createElement("script");
+            d.innerHTML =
+              "window.__CF$cv$params={r:'9a40a27ae662fd6c',t:'MTc2NDA2ODM0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+            b.getElementsByTagName("head")[0].appendChild(d);
+          }
+        }
+        if (document.body) {
+          var a = document.createElement("iframe");
+          a.height = 1;
+          a.width = 1;
+          a.style.position = "absolute";
+          a.style.top = 0;
+          a.style.left = 0;
+          a.style.border = "none";
+          a.style.visibility = "hidden";
+          document.body.appendChild(a);
+          if ("loading" !== document.readyState) c();
+          else if (window.addEventListener)
+            document.addEventListener("DOMContentLoaded", c);
+          else {
+            var e = document.onreadystatechange || function () {};
+            document.onreadystatechange = function (b) {
+              e(b);
+              "loading" !== document.readyState &&
+                ((document.onreadystatechange = e), c());
+            };
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
